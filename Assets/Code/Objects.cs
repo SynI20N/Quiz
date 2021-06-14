@@ -15,7 +15,7 @@ namespace Objects
         private UnityEvent onClick;
         private Sprite image;
         private Transform imageTransform;
-        public void Init(GameObject starParticles, Sprite image, string action)
+        public void Init(GameObject starParticles, Sprite image, UnityAction action)
         {
             this.starParticles = starParticles;
             this.image = image;
@@ -38,14 +38,15 @@ namespace Objects
         {
             onClick.Invoke();
         }
-        private void BounceAndWin()
+        public void BounceAndWin()
         {
+            SetAction(() => { });
             BounceOut();
             starParticles.transform.position = prefab.transform.position;
             starParticles.GetComponent<ParticleSystem>().Play();
             Game.Instance.StartCoroutine("GoNextLevel");
         }
-        private void Shake()
+        public void Shake()
         {
             if(imageTransform.rotation == Quaternion.identity)
                 EaseInBounce();
@@ -69,20 +70,10 @@ namespace Objects
         {
             sequence.Append(imageTransform.DOShakeRotation(0.5f));
         }
-        public void SetAction(string action)
+        public void SetAction(UnityAction action)
         {
             onClick.RemoveAllListeners();
-            switch (action)
-            {
-                case "Win":
-                    onClick.AddListener(BounceAndWin);
-                    break;
-                case "Shake":
-                    onClick.AddListener(Shake);
-                    break;
-                default:
-                    break;
-            }
+            onClick.AddListener(action);
         }
         public void Destroy()
         {
@@ -100,15 +91,16 @@ namespace Objects
         private UnityEvent onClick;
         private Material material;
 
-        public void Init(string action)
+        public void Init(UnityAction action)
         {
             prefab = gameObject;
             prefab.transform.SetParent(Game.Instance.GetCanvas().transform);
 
             onClick = new UnityEvent();
+            onClick.AddListener(action);
 
-            SetAction(action);
             GetMaterial();
+            sequence = DOTween.Sequence();
 
             FadeIn();
         }
@@ -125,29 +117,6 @@ namespace Objects
             if (prefab.TryGetComponent(out _text))
                 material = _text.material;
         }
-        private void SetAction(string action)
-        {
-            onClick.RemoveAllListeners();
-            switch (action)
-            {
-                case "Restart":
-                    onClick.AddListener(Restart);
-                    break;
-                case "Respawn":
-                    onClick.AddListener(Respawn);
-                    break;
-                default:
-                    break;
-            }
-        }
-        private void Restart()
-        {
-            Game.Instance.StartCoroutine("Restart");
-        }
-        private void Respawn()
-        {
-            //for future uses
-        }
         public void FadeIn()
         {
             Color _color = material.GetColor("_Color");
@@ -161,13 +130,6 @@ namespace Objects
             _color.a = 1f;
             material.SetColor("_Color", _color);
             sequence.Append(material.DOFade(0f, 1f));
-        }
-        public void Destroy()
-        {
-            sequence = null;
-            onClick = null;
-            material = null;
-            Destroy(prefab);
         }
     }
     public static class Extensions

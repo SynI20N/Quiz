@@ -1,6 +1,6 @@
-﻿using System.Collections;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Events;
 using Objects;
 using UnityEngine.UI;
 using System.Linq;
@@ -33,11 +33,11 @@ public class Data : ScriptableObject
 
         Objects.Button _button = text.gameObject.AddComponent<Objects.Button>();
         buttons.Add(_button);
-        _button.Init("Idle");
+        _button.Init(() => {});
     }
     public void SpawnCells(List<Sprite> images, Vector3 startPos, int rows, int columns)
     {
-        Clean(ref images);
+        RemoveUsed(ref images);
         for(int i = 0; i < rows * columns; i++)
         {
             GameObject _object = Instantiate(
@@ -46,11 +46,11 @@ public class Data : ScriptableObject
                 Quaternion.identity, 
                 Game.Instance.GetCanvas().transform);
             cells.Add(_object.AddComponent<Cell>());
-            cells[i].Init(starParticles, PickRandomSprite(ref images), "Shake");
+            cells[i].Init(starParticles, PickRandomSprite(ref images), cells[i].Shake);
         }
         images.Clear();
         int _index = Random.Range(0, rows * columns);
-        cells[_index].SetAction("Win");
+        cells[_index].SetAction(cells[_index].BounceAndWin);
         string _str = text.text;
         _str = _str.Trim();
         _str = _str.Remove(_str.LastIndexOf(' ')).TrimEnd();
@@ -58,7 +58,7 @@ public class Data : ScriptableObject
         text.text = _str;
         this.images.Remove(cells[_index].GetImage());
     }
-    private void Clean(ref List<Sprite> sprites)
+    private void RemoveUsed(ref List<Sprite> sprites)
     {
         for(int i = 0; i < sprites.Count; i++)
         {
@@ -69,25 +69,15 @@ public class Data : ScriptableObject
             }
         }
     }
-    public void CreateRestart(GameObject prefab)
+    public void CreateButton(GameObject prefab, Vector3 startPos, UnityAction action)
     {
         GameObject _object = Instantiate(
                 prefab,
-                Vector3.zero,
+                startPos,
                 Quaternion.identity);
         Objects.Button button = _object.AddComponent<Objects.Button>();
         buttons.Add(button);
-        button.Init("Restart");
-    }
-    public void CreatePanel(GameObject prefab)
-    {
-        GameObject _object = Instantiate(
-                prefab,
-                Vector3.zero,
-                Quaternion.identity);
-        Objects.Button button = _object.AddComponent<Objects.Button>();
-        buttons.Add(button);
-        button.Init("Idle");
+        button.Init(action);
     }
     private Vector3 GenerateVector(Vector3 startPos, int step, int columns)
     {

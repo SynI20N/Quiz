@@ -6,6 +6,7 @@ using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 using Objects;
 using DG.Tweening;
+#pragma warning disable 649
 
 [RequireComponent(typeof(Animator))]
 public class Game : MonoBehaviour
@@ -23,7 +24,7 @@ public class Game : MonoBehaviour
 
     private List<Sprite> sprites;
     private Data data;
-    private Level currentLevel;
+    private Level currentLevel = Level.One;
     private Animator animator;
 
     private void Awake()
@@ -31,13 +32,11 @@ public class Game : MonoBehaviour
         if (Instance == null)
             Instance = this;
         DOTween.Init();
-        DOTween.useSafeMode = false;
     }
     private void Start()
     {
         sprites = Resources.LoadAll("Images", typeof(Sprite)).Cast<Sprite>().ToList();
         data = new Data(sprites, cellPrefab, starParticles, text);
-        currentLevel = Level.One;
         animator = GetComponent<Animator>();
         data.SpawnCells(GetLevelSprites(), startPoint.position, (int)currentLevel, 3);
         data.BounceEffect();
@@ -50,11 +49,15 @@ public class Game : MonoBehaviour
     {
         return canvas;
     }
-    public IEnumerator Restart()
+    public void Restart()
     {
         transition.transform.SetAsLastSibling();
         animator.SetTrigger("Start");
 
+        StartCoroutine("DelayedLoadScene");
+    }
+    private IEnumerator DelayedLoadScene()
+    {
         yield return new WaitForSeconds(1f);
         data.ReleaseResources();
         SceneManager.LoadScene("Game");
@@ -70,8 +73,8 @@ public class Game : MonoBehaviour
         }
         else
         {
-            data.CreatePanel(panelPrefab);
-            data.CreateRestart(restartPrefab);
+            data.CreateButton(panelPrefab, Vector3.zero, () => {});
+            data.CreateButton(restartPrefab, Vector3.zero, Restart);
         }
     }
 }

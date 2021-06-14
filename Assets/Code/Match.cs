@@ -1,15 +1,13 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
+﻿using UnityEngine;
 
 [RequireComponent(typeof(Camera))]
 public class Match : MonoBehaviour
 {
-    private Camera camera;
+    private Camera _camera;
     void Awake()
     {
-        camera = GetComponent<Camera>();
-        camera.orthographicSize = Screen.height / 2;
+        _camera = GetComponent<Camera>();
+        _camera.orthographicSize = Screen.height / 2;
     }
 
     // Update is called once per frame

@@ -11,14 +11,6 @@ ScriptsOnlyBuild:
     - UnityEditor.Tilemaps.GridPalettes
     - UnityEditor.Tilemaps.SceneViewGridManager
     - UnityEditor.Tilemaps.TileDragAndDropManager
-    UnityEditor.Graphs.dll:
-    - UnityEditor.Graphs.AnimationBlendTree.Graph
-    - UnityEditor.Graphs.AnimationBlendTree.GraphGUI
-    - UnityEditor.Graphs.AnimationStateMachine.AnyStateNode
-    - UnityEditor.Graphs.AnimationStateMachine.Graph
-    - UnityEditor.Graphs.AnimationStateMachine.GraphGUI
-    - UnityEditor.Graphs.AnimationStateMachine.StateNode
-    - UnityEditor.Graphs.AnimatorControllerTool
     UnityEditor.TestRunner.dll:
     - UnityEditor.TestTools.TestRunner.Api.CallbacksHolder
     - UnityEditor.TestTools.TestRunner.TestListCacheData
@@ -60,17 +52,17 @@ ScriptsOnlyBuild:
     - Class: 114
       Script: {instanceID: 9888}
     - Class: 114
-      Script: {instanceID: 10062}
+      Script: {instanceID: 10060}
     - Class: 114
-      Script: {instanceID: 10296}
+      Script: {instanceID: 10294}
+    - Class: 114
+      Script: {instanceID: 10578}
     - Class: 114
       Script: {instanceID: 10590}
     - Class: 114
       Script: {instanceID: 11160}
     - Class: 114
       Script: {instanceID: 11532}
-    - Class: 114
-      Script: {instanceID: 18314}
     - Class: 115
       Script: {instanceID: 0}
     - Class: 128
@@ -316,6 +308,12 @@ ScriptsOnlyBuild:
     className: TMP_SpriteAnimator
   - hash:
       serializedVersion: 2
+      Hash: 71bb6a6b6c8f052f948db64c7dd3ca4f
+    assemblyName: Assembly-CSharp.dll
+    namespaceName: 
+    className: Match
+  - hash:
+      serializedVersion: 2
       Hash: 704dcd31abc789439bc3f3cd10b58c2b
     assemblyName: DOTween.dll
     namespaceName: DG.Tweening.Core
@@ -530,12 +528,6 @@ ScriptsOnlyBuild:
     assemblyName: Unity.Timeline.dll
     namespaceName: UnityEngine.Timeline
     className: PlayableTrack
-  - hash:
-      serializedVersion: 2
-      Hash: 71bb6a6b6c8f052f948db64c7dd3ca4f
-    assemblyName: Assembly-CSharp.dll
-    namespaceName: 
-    className: Match
   platform: 13
   scenePathNames:
   - Assets/Scenes/Game.unity
