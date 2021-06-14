@@ -9,10 +9,4 @@ public class Match : MonoBehaviour
         _camera = GetComponent<Camera>();
         _camera.orthographicSize = Screen.height / 2;
     }
-
-    // Update is called once per frame
-    void Update()
-    {
-        
-    }
 }
