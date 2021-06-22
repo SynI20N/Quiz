@@ -857,14 +857,14 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a87aeb1360e495a409a8f4e9cf2e470e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  cellPrefab: {fileID: 916175273}
-  restartPrefab: {fileID: 830294353}
-  panelPrefab: {fileID: 1067451038}
-  starParticles: {fileID: 1346370690}
-  transition: {fileID: 587511617}
-  startPoint: {fileID: 1678009170}
-  text: {fileID: 215450468}
-  canvas: {fileID: 1237515498}
+  _cellPrefab: {fileID: 916175273}
+  _restartPrefab: {fileID: 830294353}
+  _panelPrefab: {fileID: 1067451038}
+  _starParticles: {fileID: 1346370690}
+  _transition: {fileID: 587511617}
+  _startPoint: {fileID: 1678009170}
+  _text: {fileID: 215450468}
+  _canvas: {fileID: 1237515498}
 --- !u!95 &1237515501
 Animator:
   serializedVersion: 3

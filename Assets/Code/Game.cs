@@ -1,11 +1,10 @@
-﻿using System.Collections;
-using System.Linq;
+﻿using DG.Tweening;
+using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 using UnityEngine.UI;
-using Objects;
-using DG.Tweening;
 #pragma warning disable 649
 
 [RequireComponent(typeof(Animator))]
@@ -13,19 +12,19 @@ public class Game : MonoBehaviour
 {
     public static Game Instance { get; private set; }
 
-    [SerializeField] private GameObject cellPrefab;
-    [SerializeField] private GameObject restartPrefab;
-    [SerializeField] private GameObject panelPrefab;
-    [SerializeField] private GameObject starParticles;
-    [SerializeField] private GameObject transition;
-    [SerializeField] private Transform startPoint;
-    [SerializeField] private Text text;
-    [SerializeField] private Canvas canvas;
+    [SerializeField] private GameObject _cellPrefab;
+    [SerializeField] private GameObject _restartPrefab;
+    [SerializeField] private GameObject _panelPrefab;
+    [SerializeField] private GameObject _starParticles;
+    [SerializeField] private GameObject _transition;
+    [SerializeField] private Transform _startPoint;
+    [SerializeField] private Text _text;
+    [SerializeField] private Canvas _canvas;
 
-    private List<Sprite> sprites;
-    private Data data;
-    private Level currentLevel = Level.One;
-    private Animator animator;
+    private List<Sprite> _sprites;
+    private Data _data;
+    private Level _currentLevel = Level.One;
+    private Animator _animator;
 
     private void Awake()
     {
@@ -35,46 +34,46 @@ public class Game : MonoBehaviour
     }
     private void Start()
     {
-        sprites = Resources.LoadAll("Images", typeof(Sprite)).Cast<Sprite>().ToList();
-        data = new Data(sprites, cellPrefab, starParticles, text);
-        animator = GetComponent<Animator>();
-        data.SpawnCells(GetLevelSprites(), startPoint.position, (int)currentLevel, 3);
-        data.BounceEffect();
+        _sprites = Resources.LoadAll("Images", typeof(Sprite)).Cast<Sprite>().ToList();
+        _data = new Data(_sprites, _cellPrefab, _starParticles, _text);
+        _animator = GetComponent<Animator>();
+        _data.SpawnCells(GetLevelSprites(), _startPoint.position, (int)_currentLevel, 3);
+        _data.BounceEffect();
     }
     private List<Sprite> GetLevelSprites()
     {
-        return Resources.LoadAll("Images/Level" + (int)currentLevel, typeof(Sprite)).Cast<Sprite>().ToList();
+        return Resources.LoadAll("Images/Level" + (int)_currentLevel, typeof(Sprite)).Cast<Sprite>().ToList();
     }
     public Canvas GetCanvas()
     {
-        return canvas;
+        return _canvas;
     }
     public void Restart()
     {
-        transition.transform.SetAsLastSibling();
-        animator.SetTrigger("Start");
+        _transition.transform.SetAsLastSibling();
+        _animator.SetTrigger("Start");
 
         StartCoroutine("DelayedLoadScene");
     }
     private IEnumerator DelayedLoadScene()
     {
         yield return new WaitForSeconds(1f);
-        data.ReleaseResources();
+        _data.ReleaseResources();
         SceneManager.LoadScene("Game");
     }
     public IEnumerator GoNextLevel()
     {
         yield return new WaitForSeconds(0.7f);
-        currentLevel = currentLevel.Next();
-        if (currentLevel < Level.Restart)
+        _currentLevel = _currentLevel.Next();
+        if (_currentLevel < Level.Restart)
         {
-            data.ReleaseResources();
-            data.SpawnCells(GetLevelSprites(), startPoint.position, (int)currentLevel, 3);
+            _data.ReleaseResources();
+            _data.SpawnCells(GetLevelSprites(), _startPoint.position, (int)_currentLevel, 3);
         }
         else
         {
-            data.CreateButton(panelPrefab, Vector3.zero, () => {});
-            data.CreateButton(restartPrefab, Vector3.zero, Restart);
+            _data.CreateButton(_panelPrefab, Vector3.zero, () => { });
+            _data.CreateButton(_restartPrefab, Vector3.zero, Restart);
         }
     }
 }

@@ -65,10 +65,12 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Assets\Code\Data.cs" />
+    <Compile Include="Assets\Code\Extentions.cs" />
     <Compile Include="Assets\Code\Game.cs" />
     <Compile Include="Assets\Code\Interfaces.cs" />
     <Compile Include="Assets\Code\Match.cs" />
-    <Compile Include="Assets\Code\Objects.cs" />
+    <Compile Include="Assets\Code\Objects\Button.cs" />
+    <Compile Include="Assets\Code\Objects\Cell.cs" />
     <Reference Include="Unity.Timeline.Editor">
       <HintPath>C:/Games/Test2/Library/ScriptAssemblies/Unity.Timeline.Editor.dll</HintPath>
     </Reference>
