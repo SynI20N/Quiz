@@ -45,10 +45,6 @@ public class Game : MonoBehaviour
     {
         return Resources.LoadAll("Images", typeof(Sprite)).Cast<Sprite>().ToList();
     }
-    public Canvas GetCanvas()
-    {
-        return FindObjectOfType<Canvas>();
-    }
     public void Restart()
     {
         _transitionPrefab.transform.SetAsLastSibling();
@@ -62,9 +58,9 @@ public class Game : MonoBehaviour
         _container.ReleaseResources();
         SceneManager.LoadScene("Game");
     }
-    public IEnumerator GoNextLevel(Vector3 starsPos)
+    public IEnumerator GoNextLevel(Vector3 cellPos)
     {
-        _starsPrefab.transform.position = starsPos;
+        _starsPrefab.transform.position = cellPos;
         _starsPrefab.GetComponent<ParticleSystem>().Play();
         yield return new WaitForSeconds(0.7f);
         _currentLevel = _currentLevel.Next();

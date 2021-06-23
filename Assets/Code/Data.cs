@@ -14,12 +14,14 @@ public class Container : ScriptableObject
     private List<Cell> _cells;
     private List<Button> _buttons;
 
+    private Canvas _canvas;
     private Text _text;
 
     public Container(List<Sprite> images, Text text)
     {
         _sprites = images.GroupBy(x => x.name).Select(x => x.First()).ToList();
         _text = text;
+        _canvas = FindObjectOfType<Canvas>();
         _cells = new List<Cell>(_maxCellsOnScreen);
         _buttons = new List<Button>(_maxButtonsOnScreen);
     }
@@ -29,7 +31,7 @@ public class Container : ScriptableObject
         RemoveUsed(ref _levelSprites);
         for (int i = 0; i < table.Rows * table.Columns; i++)
         {
-            GameObject _object = Instantiate(prefab, GenerateVector(table, i, prefab), Quaternion.identity, Game.Instance.GetCanvas().transform);
+            GameObject _object = Instantiate(prefab, GenerateVector(table, i, prefab), Quaternion.identity, _canvas.transform);
             _cells.Add(_object.AddComponent<Cell>());
             _cells[i].Init(PickRandomSprite(ref _levelSprites), _cells[i].EaseInBounce);
         }
@@ -51,7 +53,8 @@ public class Container : ScriptableObject
         GameObject _object = Instantiate(
                 prefab,
                 startPos,
-                Quaternion.identity);
+                Quaternion.identity,
+                _canvas.transform);
         Button button = _object.AddComponent<Button>();
         _buttons.Add(button);
         button.Init(action);
@@ -97,11 +100,6 @@ public class Container : ScriptableObject
         {
             c.Destroy();
         }
-        foreach (var b in _buttons)
-        {
-            //b.Destroy();
-        }
-        //_buttons.Clear();
         _cells.Clear();
     }
 }

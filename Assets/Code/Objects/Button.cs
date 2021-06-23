@@ -14,7 +14,6 @@ public class Button : MonoBehaviour, IFadeable
     public void Init(UnityAction action)
     {
         _prefab = gameObject;
-        _prefab.transform.SetParent(Game.Instance.GetCanvas().transform);
 
         _onClick = new UnityEvent();
         _onClick.AddListener(action);
