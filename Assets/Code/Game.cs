@@ -15,14 +15,12 @@ public class Game : MonoBehaviour
     [SerializeField] private GameObject _cellPrefab;
     [SerializeField] private GameObject _restartPrefab;
     [SerializeField] private GameObject _panelPrefab;
-    [SerializeField] private GameObject _starParticles;
-    [SerializeField] private GameObject _transition;
+    [SerializeField] private GameObject _starsPrefab;
+    [SerializeField] private GameObject _transitionPrefab;
     [SerializeField] private Transform _startPoint;
     [SerializeField] private Text _text;
-    [SerializeField] private Canvas _canvas;
 
-    private List<Sprite> _sprites;
-    private Data _data;
+    private Container _container;
     private Level _currentLevel = Level.One;
     private Animator _animator;
 
@@ -34,23 +32,26 @@ public class Game : MonoBehaviour
     }
     private void Start()
     {
-        _sprites = Resources.LoadAll("Images", typeof(Sprite)).Cast<Sprite>().ToList();
-        _data = new Data(_sprites, _cellPrefab, _starParticles, _text);
+        _container = new Container(GetAllSprites(), _text);
         _animator = GetComponent<Animator>();
-        _data.SpawnCells(GetLevelSprites(), _startPoint.position, (int)_currentLevel, 3);
-        _data.BounceEffect();
+        _container.CreateCells(_cellPrefab,new Table(_startPoint.position, (int)_currentLevel, 3), GetLevelSprites());
+        _container.BounceEffect();
     }
     private List<Sprite> GetLevelSprites()
     {
         return Resources.LoadAll("Images/Level" + (int)_currentLevel, typeof(Sprite)).Cast<Sprite>().ToList();
     }
+    private List<Sprite> GetAllSprites()
+    {
+        return Resources.LoadAll("Images", typeof(Sprite)).Cast<Sprite>().ToList();
+    }
     public Canvas GetCanvas()
     {
-        return _canvas;
+        return FindObjectOfType<Canvas>();
     }
     public void Restart()
     {
-        _transition.transform.SetAsLastSibling();
+        _transitionPrefab.transform.SetAsLastSibling();
         _animator.SetTrigger("Start");
 
         StartCoroutine("DelayedLoadScene");
@@ -58,29 +59,24 @@ public class Game : MonoBehaviour
     private IEnumerator DelayedLoadScene()
     {
         yield return new WaitForSeconds(1f);
-        _data.ReleaseResources();
+        _container.ReleaseResources();
         SceneManager.LoadScene("Game");
     }
-    public IEnumerator GoNextLevel()
+    public IEnumerator GoNextLevel(Vector3 starsPos)
     {
+        _starsPrefab.transform.position = starsPos;
+        _starsPrefab.GetComponent<ParticleSystem>().Play();
         yield return new WaitForSeconds(0.7f);
         _currentLevel = _currentLevel.Next();
         if (_currentLevel < Level.Restart)
         {
-            _data.ReleaseResources();
-            _data.SpawnCells(GetLevelSprites(), _startPoint.position, (int)_currentLevel, 3);
+            _container.ReleaseResources();
+            _container.CreateCells(_cellPrefab, new Table(_startPoint.position, (int)_currentLevel, 3), GetLevelSprites());
         }
         else
         {
-            _data.CreateButton(_panelPrefab, Vector3.zero, () => { });
-            _data.CreateButton(_restartPrefab, Vector3.zero, Restart);
+            _container.CreateButton(_panelPrefab, Vector3.zero, () => { });
+            _container.CreateButton(_restartPrefab, Vector3.zero, Restart);
         }
     }
-}
-enum Level
-{
-    One = 1,
-    Two = 2,
-    Three = 3,
-    Restart = 4
 }

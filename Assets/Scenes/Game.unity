@@ -860,11 +860,10 @@ MonoBehaviour:
   _cellPrefab: {fileID: 916175273}
   _restartPrefab: {fileID: 830294353}
   _panelPrefab: {fileID: 1067451038}
-  _starParticles: {fileID: 1346370690}
-  _transition: {fileID: 587511617}
+  _starsPrefab: {fileID: 1346370690}
+  _transitionPrefab: {fileID: 587511617}
   _startPoint: {fileID: 1678009170}
   _text: {fileID: 215450468}
-  _canvas: {fileID: 1237515498}
 --- !u!95 &1237515501
 Animator:
   serializedVersion: 3

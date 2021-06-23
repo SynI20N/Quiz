@@ -28,15 +28,6 @@ public class Button : MonoBehaviour, IFadeable
     {
         _onClick.Invoke();
     }
-    private void GetMaterial()
-    {
-        Image _image;
-        if (_prefab.TryGetComponent(out _image))
-            _material = _image.material;
-        Text _text;
-        if (_prefab.TryGetComponent(out _text))
-            _material = _text.material;
-    }
     public void FadeIn()
     {
         SetColorAlpha(0f);
@@ -52,5 +43,14 @@ public class Button : MonoBehaviour, IFadeable
         Color _color = _material.GetColor("_Color");
         _color.a = alpha;
         _material.SetColor("_Color", _color);
+    }
+    private void GetMaterial()
+    {
+        Image _image;
+        if (_prefab.TryGetComponent(out _image))
+            _material = _image.material;
+        Text _text;
+        if (_prefab.TryGetComponent(out _text))
+            _material = _text.material;
     }
 }

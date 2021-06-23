@@ -65,9 +65,11 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Assets\Code\Data.cs" />
-    <Compile Include="Assets\Code\Extentions.cs" />
+    <Compile Include="Assets\Code\Declarations\Enums.cs" />
+    <Compile Include="Assets\Code\Declarations\Extentions.cs" />
+    <Compile Include="Assets\Code\Declarations\Interfaces.cs" />
+    <Compile Include="Assets\Code\Declarations\Structs.cs" />
     <Compile Include="Assets\Code\Game.cs" />
-    <Compile Include="Assets\Code\Interfaces.cs" />
     <Compile Include="Assets\Code\Match.cs" />
     <Compile Include="Assets\Code\Objects\Button.cs" />
     <Compile Include="Assets\Code\Objects\Cell.cs" />
